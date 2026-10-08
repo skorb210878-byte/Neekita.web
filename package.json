@@ -1,0 +1,21 @@
+{
+  "name": "nikita-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Сайт-визитка веб-разработчика Никиты: сайты, боты, Mini App",
+  "scripts": {
+    "qa": "node qa/run-qa.js",
+    "placeholders": "node scripts/find-placeholders.js",
+    "generate:og-image": "node scripts/generate-og-image.js",
+    "generate:favicon": "node scripts/generate-favicon.js"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "html-validate": "11.16.2",
+    "http-server": "14.1.1",
+    "lighthouse": "13.5.0",
+    "playwright": "1.64.0",
+    "sharp": "0.35.5"
+  }
+}
