@@ -48,16 +48,28 @@ SEO 100. Итоговый `exit code 0`. Коммит `03c6dd2`.
 `prefers-reduced-motion`), «журнал работы» построчно (только реальные названия
 проектов), кнопка «Написать в Telegram».
 
-- [ ] Кнопка ведёт на `https://t.me/nkt_ptv?text=<encoded>` с текстом «Здравствуйте,
+- [x] Кнопка ведёт на `https://t.me/nkt_ptv?text=<encoded>` с текстом «Здравствуйте,
       Никита! Хочу обсудить проект».
-- [ ] «Журнал работы»: строки — реальные названия («SiDa Candle», «BMW M5 G90» и
-      др. из фактов раздела 5), `aria-hidden="true"`, статичный вывод при
-      `prefers-reduced-motion`.
+- [x] «Журнал работы»: строки — реальные названия («SiDa Candle», «BMW M5 G90»),
+      `aria-hidden="true"`, статичный вывод при `prefers-reduced-motion`.
+- [x] Фактура (зерно SVG feTurbulence, виньетка, 2 туманных слоя), световое пятно
+      за курсором (только pointer:fine, выключено при reduced-motion), пауза
+      анимаций на скрытой вкладке (Page Visibility API).
 
-**Критерий:** `npm run qa` (Playwright-часть) → в hero нет ошибок консоли, клик по
-кнопке формирует корректный `href` (проверяется в тесте через `getAttribute`);
-ручная проверка в DevTools с `prefers-reduced-motion: reduce` — анимации выключены
-(описать в отчёте, что реально увидено).
+**Критерий:** `npm run qa` → html-validate OK, Playwright 3 разрешения OK,
+axe-core OK, Lighthouse 100/100/100/100, exit 0. **Доп. проверки (реальный
+вывод команд)**:
+- `getAttribute('#telegram-cta','href')` →
+  `https://t.me/nkt_ptv?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%2C%20%D0%9D%D0%B8%D0%BA%D0%B8%D1%82%D0%B0!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82`.
+- Контекст с `reducedMotion: 'reduce'`: `getComputedStyle(li).animationName` →
+  `"none"`, `opacity` → `"1"` (строки видны сразу, без анимации).
+- Контекст по умолчанию (мышь): `.cursor-light` без `pointermove` — класс
+  `is-active` отсутствует; после `mouse.move()` — появляется.
+- Эмуляция `devices['iPhone 13']`: `matchMedia('(pointer: fine)').matches` →
+  `false` → курсорный свет не инициализируется на тач-экранах.
+- Один прогон `axe-core` поймал serious `color-contrast` на кадре с незавершённой
+  fade-in анимацией журнала — добавлена пауза `ANIMATION_SETTLE_MS=3000` перед
+  скриншотами/axe в `qa/run-qa.js` (см. DECISIONS.md), после — 0 нарушений.
 
 ## Этап 3. Проекты и услуги + визуальный осмотр №1
 

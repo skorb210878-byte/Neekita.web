@@ -17,6 +17,14 @@
 <body>
   <a class="skip-link" href="#main">Перейти к содержимому</a>
 
+  <div class="texture" aria-hidden="true">
+    <div class="texture__fog texture__fog--one"></div>
+    <div class="texture__fog texture__fog--two"></div>
+    <div class="texture__grain"></div>
+    <div class="texture__vignette"></div>
+  </div>
+  <div class="cursor-light" aria-hidden="true"></div>
+
   <header class="site-header">
     <span class="brand" aria-hidden="true">Н.</span>
   </header>
@@ -24,7 +32,31 @@
   <main id="main">
 
     <section id="hero" class="section section--hero" aria-labelledby="hero-heading">
-      <h1 id="hero-heading">Никита. Сайты, боты, Mini App.</h1>
+      <div class="hero__text">
+        <h1 id="hero-heading">Никита. Сайты, боты, Mini App.</h1>
+        <p class="hero__lead">
+          Делаю сайты, Telegram-ботов и Mini App для владельцев малого бизнеса —
+          без долгих согласований и лишних слов.
+        </p>
+        <a
+          id="telegram-cta"
+          class="button button--telegram"
+          href="https://t.me/nkt_ptv"
+          data-message="Здравствуйте, Никита! Хочу обсудить проект"
+          target="_blank"
+          rel="noopener"
+        >Написать в Telegram</a>
+      </div>
+
+      <div class="work-log" aria-hidden="true">
+        <p class="work-log__title">$ git log --oneline</p>
+        <ul class="work-log__list">
+          <li>a3f9c1d коммит — SiDa Candle</li>
+          <li>7e21b08 рефактор камеры — BMW M5 G90</li>
+          <li>c44a902 деплой — SiDa Candle</li>
+          <li>f108e3a правка — BMW M5 G90</li>
+        </ul>
+      </div>
     </section>
 
     <section id="projects" class="section" aria-labelledby="projects-heading">

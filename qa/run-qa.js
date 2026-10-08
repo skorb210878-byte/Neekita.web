@@ -19,6 +19,10 @@ const ROOT = path.resolve(__dirname, '..');
 const PORT = 4173;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 const SCREENS_DIR = path.join(ROOT, 'qa', 'screens');
+// Дольше самой долгой CSS-анимации на странице (журнал работы в hero,
+// последняя строка стартует на 2.3s + 0.5s), чтобы axe и скриншоты не ловили
+// текст в процессе fade-in с временно низким контрастом.
+const ANIMATION_SETTLE_MS = 3000;
 
 const VIEWPORTS = [
   { name: 'mobile', width: 390, height: 844 },
@@ -100,6 +104,7 @@ async function checkPage(browser, viewport) {
   });
 
   await page.goto(BASE_URL, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(ANIMATION_SETTLE_MS);
 
   const hasHorizontalScroll = await page.evaluate(
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
@@ -150,6 +155,7 @@ async function runAxe(browser) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   await page.goto(BASE_URL, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(ANIMATION_SETTLE_MS);
 
   const axeResults = await new AxeBuilder({ page }).analyze();
   const seriousOrCritical = axeResults.violations.filter(
