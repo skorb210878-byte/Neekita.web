@@ -9,31 +9,38 @@
 Не описан явно в разделе 8, но нужен как база для всех этапов (git, package.json,
 структура папок).
 
-- [ ] `git init`, `.gitignore` (`node_modules/`, `qa/screens/` — решить при
-      выполнении, попадают ли скриншоты в репозиторий или только в отчёт).
-- [ ] `package.json` с запиненными версиями (см. «Пакеты» ниже), `"type": "module"`.
-- [ ] Структура папок: `assets/`, `scripts/` (Node-скрипты, не bash), `qa/`.
-- [ ] Первый коммит.
+- [x] `git init`, `.gitignore` (`node_modules/`, `qa/screens/`, `qa/*.json`,
+      `.claude/` — скриншоты и JSON-отчёты воспроизводимы, в репозиторий не идут).
+- [x] `package.json` с запиненными версиями (см. «Пакеты» ниже), `"type": "module"`.
+- [x] Структура папок: `assets/`, `scripts/` (Node-скрипты, не bash), `qa/`, `css/`, `js/`.
+- [x] Первый коммит (`03c6dd2`).
 
-**Критерий:** `git log --oneline -1` → есть один коммит; `npm install` завершается
-кодом 0; `node -e "console.log('ok')"` → `ok` (Node виден из package.json окружения).
+**Критерий:** `git log --oneline -1` → есть коммит; `npm install` завершается
+кодом 0; `node -e "console.log('ok')"` → `ok`. **Выполнено**: `npm install`
+exit 0 (172 пакета, 0 уязвимостей), `node -e "console.log('ok')"` → `ok`,
+коммит `03c6dd2` создан. Playwright Chromium решили не ставить (зависла загрузка
+28+ мин) — используем системный Chrome/Edge через `channel`, см. DECISIONS.md.
 
 ## Этап 1. Каркас
 
 Структура, переменные, шрифты, сетка, базовая типографика, `npm run qa` хотя бы
 запускается.
 
-- [ ] `index.html` с семантикой `header/main/section/footer`, один `h1`, `lang="ru"`,
+- [x] `index.html` с семантикой `header/main/section/footer`, один `h1`, `lang="ru"`,
       ссылка «Перейти к содержимому».
-- [ ] CSS-переменные палитры в `:root` (раздел 4), подключение Google Fonts
+- [x] CSS-переменные палитры в `:root` (раздел 4), подключение Google Fonts
       (Barlow Condensed, Inter, JetBrains Mono) с `display=swap` и `preconnect`.
-- [ ] Сетка 12 колонок, базовая типографика.
-- [ ] Скрипт `npm run qa` существует и запускается (даже если часть проверок пока
-      падает/не настроена) — локальный сервер поднимается и закрывается сам.
+- [x] Сетка 12 колонок, базовая типографика.
+- [x] Скрипт `npm run qa` существует и запускается.
 
 **Критерий:** `npx html-validate index.html` → 0 ошибок; `npm run qa` завершает
-процесс без краша Node (exit code возвращается, лог сохраняется в `qa/`), реальный
-вывод команды прикладывается к отчёту об этапе.
+процесс без краша Node. **Выполнено**: `html-validate` → 0 ошибок (после правки
+`<!DOCTYPE html>` на заглавные буквы — правило `doctype-style`). `npm run qa` —
+реальный вывод: html-validate OK, Playwright 390×844/768×1024/1440×900 — консоль
+чистая, нет горизонтальной прокрутки, у всех ссылок есть `href`, якоря не битые
+(пока ссылок/якорей на странице просто ещё нет), axe-core — 0 нарушений,
+Lighthouse mobile — Performance 100 / Accessibility 100 / Best Practices 100 /
+SEO 100. Итоговый `exit code 0`. Коммит `03c6dd2`.
 
 ## Этап 2. Hero
 
