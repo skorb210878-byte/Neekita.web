@@ -152,7 +152,9 @@ p {
 
 .section > h1,
 .section > h2,
-.section > .section-number {
+.section > .section-number,
+.section > .project-grid,
+.section > .service-grid {
   grid-column: 1 / -1;
 }
 
@@ -380,4 +382,177 @@ a.button {
 .is-hidden .texture__fog,
 .is-hidden .work-log__list li {
   animation-play-state: paused;
+}
+
+/* ==========================================================================
+   Проекты
+   ========================================================================== */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--gutter);
+  margin-top: 1rem;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.project-card__media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  aspect-ratio: 16 / 10;
+  padding: 1.5rem;
+  text-align: center;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      var(--surface-2),
+      var(--surface-2) 2px,
+      var(--surface-1) 2px,
+      var(--surface-1) 14px
+    );
+  border-bottom: 1px solid var(--line);
+}
+
+.project-card__media-mark {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.project-card__media-note {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.project-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.project-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.75em;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius);
+}
+
+.badge--status {
+  color: var(--accent);
+}
+
+.project-card__title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.project-card__stack {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.project-card__desc {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.project-card__link {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.project-card__link:hover,
+.project-card__link:focus-visible {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Услуги
+   ========================================================================== */
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--gutter);
+  margin-top: 1rem;
+}
+
+.service-card {
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.service-card h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.service-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.service-card__facts {
+  margin: auto 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0.5rem;
+}
+
+.service-card__facts > div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  align-items: baseline;
+}
+
+.service-card__facts dt {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.service-card__facts dd {
+  margin: 0;
+  text-align: left;
 }
