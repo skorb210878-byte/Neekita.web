@@ -110,14 +110,25 @@ OK, axe-core 0 нарушений, Lighthouse mobile 100/100/100/100, exit 0.
 
 ## Этап 5. SEO/шаринг, og:image, favicon + визуальный осмотр №2
 
-- [ ] `title`, `description`, `canonical` (`[ЗАПОЛНИТЬ: итоговый URL]` до публикации
-      на Pages), Open Graph/Twitter-теги, `og:image` 1200×630 (генерируется
-      скриптом через `sharp` в стиле сайта), favicon SVG-монограмма «Н».
-- [ ] JSON-LD `Person`.
+- [x] `title`, `description` — есть с этапа 1. `canonical`/`og:url` — не
+      ставим: домен ещё не известен (ТЗ допускает canonical «если домен
+      известен»), вместо этого HTML-комментарий с `[ЗАПОЛНИТЬ: ...]`, который
+      подхватывает `npm run placeholders`. Open Graph + Twitter Card теги,
+      `og:image` 1200×630 (генерируется `scripts/generate-og-image.js` через
+      `sharp`), favicon — геометрическая SVG-монограмма «Н»
+      (`scripts/generate-favicon.js`) + растры для apple-touch-icon.
+- [x] JSON-LD `Person` (имя, город, ссылки на Telegram/MAX — без выдуманных
+      полей вроде опыта/отзывов).
 
-**Критерий:** `node scripts/generate-og-image.js` → создаёт `assets/og-image.png`
-1200×630 (проверка размеров через `sharp(...).metadata()` в самом скрипте);
-`npx html-validate index.html` → 0 ошибок; визуальный осмотр №2 в `QA.md`.
+**Критерий:** `node scripts/generate-og-image.js` → создаёт `assets/img/og-image.jpg`
+1200×630. **Выполнено**: `assets/img/og-image.jpg создан: 1200×630, 21833 байт`
+(после перехода с PNG 478 КБ на JPEG/mozjpeg — см. DECISIONS.md).
+`npx html-validate index.html` → 0 ошибок. `npm run qa`: html-validate OK,
+Playwright 3 разрешения OK, axe-core 0 нарушений, Lighthouse mobile
+99/100/100/100, exit 0. Визуальный осмотр №2 — см. `QA.md`: новых недостатков
+по рубрике не найдено; отдельно найден и исправлен баг в
+`find-placeholders.js` (построчный поиск не видел многострочный плейсхолдер,
+14 находок вместо 13 после фикса).
 
 ## Этап 6. Доводка: движение, reduced-motion, производительность, адаптив
 
