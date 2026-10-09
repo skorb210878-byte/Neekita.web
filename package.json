@@ -7,6 +7,8 @@
   "scripts": {
     "qa": "node qa/run-qa.js",
     "placeholders": "node scripts/find-placeholders.js",
+    "check:responsive": "node scripts/check-responsive.js",
+    "check:weight": "node scripts/check-page-weight.js",
     "generate:og-image": "node scripts/generate-og-image.js",
     "generate:favicon": "node scripts/generate-favicon.js"
   },
