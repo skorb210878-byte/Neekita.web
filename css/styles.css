@@ -357,6 +357,14 @@ a.button {
   max-width: 44ch;
 }
 
+.hero__stats {
+  margin: 0 0 1em;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+
 .hero__lead {
   color: var(--text-muted);
   font-size: 1.1rem;
