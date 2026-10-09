@@ -89,16 +89,36 @@
           >Написать в Telegram</a>
         </div>
 
-        <div class="work-log" aria-hidden="true">
-          <p class="work-log__title">
-            <span class="work-log__prompt">$ git log --oneline</span><span class="work-log__cursor"></span>
-          </p>
-          <ul class="work-log__list">
-            <li>a3f9c1d форма заказа — SiDa Candle</li>
-            <li>7e21b08 рефактор камеры — BMW M5 G90</li>
-            <li>c18e4af корзина и заказы — Mini App</li>
-            <li>f6b2d0a оплата Tribute — бот для канала</li>
-          </ul>
+        <div class="code-window" aria-hidden="true">
+          <div class="code-window__tabs">
+            <span class="code-window__tab is-active" data-filename="bot.py">bot.py</span>
+            <span class="code-window__tab" data-filename="cart.js">cart.js</span>
+            <span class="code-window__tab" data-filename="catalog.js">catalog.js</span>
+            <span class="code-window__tab" data-filename="scene.js">scene.js</span>
+          </div>
+          <div class="code-window__viewport">
+            <div class="code-window__lines">
+              <div class="code-window__line"><span class="code-window__lineno">1</span><span class="code-window__code"><span class="tok tok--comment"># Обработчик команды /start</span></span></div>
+              <div class="code-window__line"><span class="code-window__lineno">2</span><span class="code-window__code"><span class="tok tok--keyword">from</span> aiogram <span class="tok tok--keyword">import</span> Bot, Dispatcher, types</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">3</span><span class="code-window__code"><span class="tok tok--keyword">from</span> aiogram.filters <span class="tok tok--keyword">import</span> Command</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">4</span><span class="code-window__code"><span class="tok tok--keyword">from</span> aiogram.utils.keyboard <span class="tok tok--keyword">import</span> InlineKeyboardBuilder</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">5</span><span class="code-window__code"></span></div>
+              <div class="code-window__line"><span class="code-window__lineno">6</span><span class="code-window__code">dp = Dispatcher()</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">7</span><span class="code-window__code"></span></div>
+              <div class="code-window__line"><span class="code-window__lineno">8</span><span class="code-window__code">@dp.message(Command(<span class="tok tok--string">"start"</span>))</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">9</span><span class="code-window__code"><span class="tok tok--keyword">async</span> <span class="tok tok--keyword">def</span> cmd_start(message: types.Message) -&gt; <span class="tok tok--keyword">None</span>:</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">10</span><span class="code-window__code"><span class="tok tok--comment">    # Кнопка со ссылкой на оплату подписки</span></span></div>
+              <div class="code-window__line"><span class="code-window__lineno">11</span><span class="code-window__code">    keyboard = InlineKeyboardBuilder()</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">12</span><span class="code-window__code">    keyboard.button(</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">13</span><span class="code-window__code">        text=<span class="tok tok--string">"Оформить подписку"</span>,</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">14</span><span class="code-window__code">        url=<span class="tok tok--string">"https://example.com/subscribe"</span>,</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">15</span><span class="code-window__code">    )</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">16</span><span class="code-window__code">    <span class="tok tok--keyword">await</span> message.answer(</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">17</span><span class="code-window__code">        <span class="tok tok--string">"Привет! Это закрытый канал."</span>,</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">18</span><span class="code-window__code">        reply_markup=keyboard.as_markup(),</span></div>
+              <div class="code-window__line"><span class="code-window__lineno">19</span><span class="code-window__code">    )</span></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

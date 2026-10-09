@@ -319,26 +319,22 @@ a.button {
   font-size: 1.1rem;
 }
 
-.section--hero .work-log {
+.section--hero .code-window {
   grid-column: 8 / 13;
   justify-self: stretch;
 }
 
-/* ≤900px: журнал работы уходит из колонки вправо и встаёт под текст —
-   иначе на планшете колонке 8/13 не хватает места и она ломает читаемость. */
+/* ≤900px: окно редактора уходит из колонки вправо и встаёт под текст —
+   иначе на планшете колонке 8/13 не хватает места и оно ломает читаемость. */
 @media (max-width: 900px) {
   .hero__text,
-  .section--hero .work-log {
+  .section--hero .code-window {
     grid-column: 1 / -1;
-  }
-
-  .section--hero .work-log {
-    max-width: none;
   }
 }
 
-/* На мобильном жёсткая вертикальная центровка на 90vh вместе с увеличенным
-   журналом работы могла бы увести кнопку «Написать в Telegram» за пределы
+/* На мобильном жёсткая вертикальная центровка на 90vh вместе с окном
+   редактора могла бы увести кнопку «Написать в Telegram» за пределы
    экрана без скролла — отключаем центровку, контент идёт сверху вниз. */
 @media (max-width: 600px) {
   .section--hero {
@@ -434,66 +430,137 @@ a.button {
   mix-blend-mode: screen;
 }
 
-.work-log {
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  color: var(--text-muted);
+/* ==========================================================================
+   Окно редактора кода в hero (замена «журнала работы»). Статика в разметке
+   (фрагмент bot.py) — для без-JS и prefers-reduced-motion; динамику
+   (печать, подсветку, скролл, смену вкладок) даёт js/heroCode.js.
+   ========================================================================== */
+
+.code-window {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* Высота подобрана так, чтобы фрагменты 19-20 строк реально не
+     помещались целиком и прокрутка была видна — не только формально
+     существовала в коде (проверено прогоном, см. DECISIONS.md). */
+  height: min(62vh, 440px);
+  min-height: 360px;
   background: var(--surface-1);
   border: 1px solid var(--line);
   border-left: 2px solid var(--accent);
   border-radius: var(--radius);
-  padding: 2rem 2.25rem;
-  width: 100%;
-  max-width: 440px;
   box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
 }
 
-.work-log__title {
+.code-window__tabs {
   display: flex;
-  align-items: center;
-  margin: 0 0 1rem;
+  flex-shrink: 0;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.code-window__tab {
+  padding: 0.6em 1.1em;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  border-right: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.code-window__tab.is-active {
+  color: var(--text);
+  background: var(--surface-1);
+  box-shadow: inset 0 2px 0 var(--accent);
+}
+
+.code-window__viewport {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  padding-block: 0.75rem;
+}
+
+.code-window__lines {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  transition: transform 320ms ease;
+}
+
+.code-window__lines.is-clearing {
+  transition: opacity 250ms ease;
+  opacity: 0;
+}
+
+.code-window__line {
+  display: flex;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+.code-window__lineno {
+  flex-shrink: 0;
+  width: 2.25em;
+  padding-right: 0.9em;
+  text-align: right;
+  color: var(--text-muted);
+  opacity: 0.6;
+  user-select: none;
+}
+
+.code-window__code {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
   color: var(--text);
 }
 
-.work-log__cursor {
-  display: none;
-  width: 0.55em;
-  height: 1.1em;
-  margin-left: 2px;
+/* Подсветка — только цвета палитры (раздел 4 ТЗ), без «радужной» схемы. */
+.tok--keyword { color: var(--accent); }
+.tok--string { color: var(--hero-warm-white); }
+.tok--comment { color: var(--text-muted); }
+
+.code-window__cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1.15em;
+  margin-left: 1px;
   background: var(--accent);
   vertical-align: text-bottom;
+  animation: code-cursor-blink 1s steps(1) infinite;
 }
 
-.work-log__cursor.is-active {
-  display: inline-block;
-  animation: work-log-cursor-blink 1s steps(1) infinite;
-}
-
-@keyframes work-log-cursor-blink {
+@keyframes code-cursor-blink {
   50% { opacity: 0; }
 }
 
-.work-log__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.75rem;
+@media (max-width: 900px) {
+  .code-window {
+    height: min(55vh, 400px);
+    min-height: 320px;
+  }
 }
 
-/* По умолчанию (без JS, при reduced-motion) строки видны сразу — это и
-   есть статичное состояние. Печатную анимацию включает .is-typing,
-   которую ставит js/heroWorkLog.js только когда действительно будет
-   анимировать. */
-.work-log__list.is-typing li {
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 400ms ease, transform 400ms ease;
-}
+/* Раздел 4 техзадания на переделку: мобильное окно 260–300px, шрифт 12–13px. */
+@media (max-width: 600px) {
+  .code-window {
+    height: clamp(260px, 70vw, 300px);
+    min-height: 260px;
+  }
 
-.work-log__list.is-typing li.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+  .code-window__line {
+    font-size: 13px;
+  }
+
+  .code-window__lineno {
+    width: 1.8em;
+    padding-right: 0.6em;
+  }
 }
 
 /* ==========================================================================
@@ -503,21 +570,18 @@ a.button {
 @media (prefers-reduced-motion: reduce) {
   .texture__fog,
   .hero-light,
-  .work-log__cursor {
+  .code-window__cursor {
     animation: none;
-  }
-
-  .work-log__list.is-typing li {
-    transition: none;
-    opacity: 1;
-    transform: none;
   }
 }
 
-/* Пауза анимаций при скрытой вкладке — класс ставит js/visibility.js */
+/* Пауза анимаций при скрытой вкладке — класс ставит js/visibility.js.
+   Печать/скролл окна редактора на паузе отдельно, через document.hidden
+   прямо в js/heroCode.js (это JS-цикл, а не CSS-анимация) — здесь только
+   мигание курсора, оно именно CSS-анимация. */
 .is-hidden .texture__fog,
 .is-hidden .hero-light,
-.is-hidden .work-log__cursor {
+.is-hidden .code-window__cursor {
   animation-play-state: paused;
 }
 
