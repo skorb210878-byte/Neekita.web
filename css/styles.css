@@ -616,6 +616,12 @@ a.button {
   .code-window__cursor {
     animation: none;
   }
+
+  .service-card,
+  .service-card::after,
+  .service-card__select {
+    transition-duration: 0.01ms;
+  }
 }
 
 /* Пауза анимаций при скрытой вкладке — класс ставит js/visibility.js.
@@ -735,6 +741,7 @@ a.button {
 }
 
 .service-card {
+  position: relative;
   background: var(--surface-1);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -742,6 +749,81 @@ a.button {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  transition: transform var(--transition-fast);
+}
+
+/* Карточка «Выбрать»: место под кнопку зарезервировано всегда (кнопка не
+   display:none, только opacity/transform), поэтому карточка не прыгает по
+   высоте при наведении — см. DECISIONS.md. */
+.service-card__cta {
+  display: flex;
+}
+
+.service-card__select {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 20px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-decoration: none;
+  border-radius: var(--radius);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
+}
+
+.service-card__select:hover,
+.service-card__select:focus-visible {
+  background: #e6a158;
+}
+
+/* Наведение мышью скрывает/показывает кнопку и подсвечивает карточку только
+   там, где наведение в принципе есть (hover:hover + pointer:fine) — на
+   touch-экранах кнопка остаётся видимой всегда (правило из ТЗ). «Рамка
+   становится янтарной» и «тёплое свечение» сделаны через ::after с
+   opacity-переходом, а не через transition border-color/box-shadow —
+   по правилу анимируются только transform и opacity. */
+@media (hover: hover) and (pointer: fine) {
+  .service-card::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border: 1px solid var(--accent);
+    border-radius: inherit;
+    box-shadow: 0 0 40px -4px rgba(212, 137, 58, 0.45);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    pointer-events: none;
+  }
+
+  .service-card:hover,
+  .service-card:focus-within {
+    transform: translateY(-4px);
+  }
+
+  .service-card:hover::after,
+  .service-card:focus-within::after {
+    opacity: 1;
+  }
+
+  .service-card__select {
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+  }
+
+  .service-card:hover .service-card__select,
+  .service-card:focus-within .service-card__select {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
 }
 
 .service-card h3 {
@@ -904,4 +986,21 @@ a.button {
   border-color: var(--accent);
   color: var(--accent);
   background: transparent;
+}
+
+/* 3 контакта на узком экране — в столбик, во всю ширину, без
+   горизонтальной прокрутки (номер телефона — самый длинный по тексту). */
+@media (max-width: 480px) {
+  .contact-list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .contact-list li {
+    width: 100%;
+  }
+
+  .contact-list .button {
+    width: 100%;
+  }
 }
