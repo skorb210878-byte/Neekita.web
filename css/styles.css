@@ -408,20 +408,17 @@ a.button {
 }
 
 .project-card__media {
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   background: var(--surface-2);
   border-bottom: 1px solid var(--line);
 }
 
 .project-card__media img {
-  /* Без фиксированного aspect-ratio: высота блока задаётся самой картинкой
-     (width/height-атрибуты у <img> это и так резервируют, CLS не будет).
-     Скриншоты проектов — разных пропорций, подгонка под общую рамку даёт
-     либо обрезку по краям (cover), либо пустые поля (contain) — проще и
-     честнее показывать фото в его собственных пропорциях. */
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 }
 
 .project-card__body {
