@@ -410,6 +410,7 @@ a.button {
 .project-card__media {
   aspect-ratio: 16 / 10;
   overflow: hidden;
+  background: var(--surface-2);
   border-bottom: 1px solid var(--line);
 }
 
@@ -417,7 +418,9 @@ a.button {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* contain, не cover: скриншоты проектов разных пропорций не должны
+     обрезаться по краям — должны влезать в рамку целиком. */
+  object-fit: contain;
 }
 
 .project-card__body {
