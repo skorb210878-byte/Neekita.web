@@ -70,29 +70,36 @@
   <main id="main">
 
     <section id="hero" class="section section--hero" aria-labelledby="hero-heading">
-      <div class="hero__text">
-        <h1 id="hero-heading">Никита. Сайты, боты, Mini App.</h1>
-        <p class="hero__lead">
-          Делаю сайты, Telegram-ботов и Mini App для владельцев малого бизнеса —
-          без долгих согласований и лишних слов.
-        </p>
-        <a
-          class="button button--telegram js-telegram-cta"
-          href="https://t.me/nkt_ptv"
-          data-message="Здравствуйте, Никита! Хочу обсудить проект"
-          target="_blank"
-          rel="noopener"
-        >Написать в Telegram</a>
-      </div>
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-bg__rain" aria-hidden="true"></div>
 
-      <div class="work-log" aria-hidden="true">
-        <p class="work-log__title">$ git log --oneline</p>
-        <ul class="work-log__list">
-          <li>a3f9c1d коммит — SiDa Candle</li>
-          <li>7e21b08 рефактор камеры — BMW M5 G90</li>
-          <li>c44a902 деплой — SiDa Candle</li>
-          <li>f108e3a правка — BMW M5 G90</li>
-        </ul>
+      <div class="hero-inner">
+        <div class="hero__text">
+          <h1 id="hero-heading">Никита. Сайты, боты, Mini App.</h1>
+          <p class="hero__lead">
+            Делаю сайты, Telegram-ботов и Mini App для владельцев малого бизнеса —
+            без долгих согласований и лишних слов.
+          </p>
+          <a
+            class="button button--telegram js-telegram-cta"
+            href="https://t.me/nkt_ptv"
+            data-message="Здравствуйте, Никита! Хочу обсудить проект"
+            target="_blank"
+            rel="noopener"
+          >Написать в Telegram</a>
+        </div>
+
+        <div class="work-log" aria-hidden="true">
+          <p class="work-log__title">
+            <span class="work-log__prompt">$ git log --oneline</span><span class="work-log__cursor"></span>
+          </p>
+          <ul class="work-log__list">
+            <li>a3f9c1d форма заказа — SiDa Candle</li>
+            <li>7e21b08 рефактор камеры — BMW M5 G90</li>
+            <li>c18e4af корзина и заказы — Mini App</li>
+            <li>f6b2d0a оплата Tribute — бот для канала</li>
+          </ul>
+        </div>
       </div>
     </section>
 

@@ -19,10 +19,11 @@ const ROOT = path.resolve(__dirname, '..');
 const PORT = 4173;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 const SCREENS_DIR = path.join(ROOT, 'qa', 'screens');
-// Дольше самой долгой CSS-анимации на странице (журнал работы в hero,
-// последняя строка стартует на 2.3s + 0.5s), чтобы axe и скриншоты не ловили
-// текст в процессе fade-in с временно низким контрастом.
-const ANIMATION_SETTLE_MS = 3000;
+// Дольше самой долгой анимации на странице — печать команды в «журнале
+// работы» (~1.1s) + пауза курсора (0.45s) + появление 4 строк с шагом 0.55s
+// + сама transition 0.4s ≈ 3.5s до полной видимости последней строки —
+// чтобы axe и скриншоты не ловили текст в процессе fade-in.
+const ANIMATION_SETTLE_MS = 4000;
 
 const VIEWPORTS = [
   { name: 'mobile', width: 390, height: 844 },

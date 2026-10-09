@@ -14,6 +14,10 @@
   /* текст на акцентном фоне берём тёмным — на белом/светлом тексте
      контраст у янтаря ниже нормы 4.5:1, у тёмного — выше 6.5:1 */
   --accent-ink: #0b0c0d;
+  /* доп. цвета огней hero-фона (раздел 4 ТЗ: амбер/приглушённый тёплый
+     белый/редкий красноватый) — только для декора, не для текста */
+  --hero-warm-white: #d8c7ab;
+  --hero-red: #b3262b;
 
   --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
   --font-text: "Inter", system-ui, sans-serif;
@@ -282,20 +286,68 @@ a.button {
 .section--hero {
   position: relative;
   z-index: 3;
+  /* full-bleed: фон «ночного города» должен идти во всю ширину экрана, а не
+     только в колонке 1280px — поэтому здесь не наследуем
+     max-width/padding-inline от .section, их отыгрывает .hero-inner */
+  max-width: none;
+  padding-inline: 0;
+  overflow: hidden;
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+}
+
+.hero-inner {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
   gap: var(--gutter);
   align-items: center;
-  justify-content: space-between;
 }
 
 .hero__text {
+  grid-column: 1 / 8;
   max-width: 44ch;
 }
 
 .hero__lead {
   color: var(--text-muted);
   font-size: 1.1rem;
+}
+
+.section--hero .work-log {
+  grid-column: 8 / 13;
+  justify-self: stretch;
+}
+
+/* ≤900px: журнал работы уходит из колонки вправо и встаёт под текст —
+   иначе на планшете колонке 8/13 не хватает места и она ломает читаемость. */
+@media (max-width: 900px) {
+  .hero__text,
+  .section--hero .work-log {
+    grid-column: 1 / -1;
+  }
+
+  .section--hero .work-log {
+    max-width: none;
+  }
+}
+
+/* На мобильном жёсткая вертикальная центровка на 90vh вместе с увеличенным
+   журналом работы могла бы увести кнопку «Написать в Telegram» за пределы
+   экрана без скролла — отключаем центровку, контент идёт сверху вниз. */
+@media (max-width: 600px) {
+  .section--hero {
+    min-height: 0;
+  }
+
+  .hero-inner {
+    padding-block: clamp(32px, 10vw, 64px);
+  }
 }
 
 .button {
@@ -323,20 +375,102 @@ a.button {
   transform: scale(0.98);
 }
 
+/* ==========================================================================
+   Фон hero: «ночной город за мокрым стеклом» — боке-огни + лёгкий дождь на
+   стекле. Элементы .hero-light генерирует js/heroBokeh.js (один раз при
+   загрузке), дрейф/мерцание — только transform/opacity, пауза на скрытой
+   вкладке через .is-hidden, статичный кадр при prefers-reduced-motion.
+   ========================================================================== */
+
+.hero-bg,
+.hero-bg__rain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-light {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  /* мягкий край через radial-gradient, не через filter: blur — дешевле на
+     20+ элементах, не грузит слабые телефоны */
+  background: radial-gradient(circle, var(--light-color) 0%, transparent 72%);
+  opacity: var(--light-opacity, 0.16);
+  transform: translate(-50%, -50%);
+  animation:
+    hero-light-drift var(--duration, 30s) ease-in-out infinite,
+    hero-light-flicker var(--flicker, 6s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s), var(--flicker-delay, 0s);
+  will-change: transform, opacity;
+}
+
+@keyframes hero-light-drift {
+  0%, 100% { transform: translate(-50%, -50%); }
+  50% { transform: translate(calc(-50% + var(--drift-x)), calc(-50% + var(--drift-y))); }
+}
+
+@keyframes hero-light-flicker {
+  0%, 100% { opacity: var(--light-opacity, 0.16); }
+  50% { opacity: calc(var(--light-opacity, 0.16) * 0.45); }
+}
+
+.hero-bg__rain {
+  /* тонкие, почти незаметные диагональные блики — «дождь на стекле».
+     Статично (не анимировано) — заметности и так минимум, лишняя
+     анимация ничего не добавляет, см. DECISIONS.md. */
+  background-image: repeating-linear-gradient(
+    98deg,
+    rgba(217, 219, 220, 0.03) 0px,
+    rgba(217, 219, 220, 0.03) 1px,
+    transparent 1px,
+    transparent 16px
+  );
+  mix-blend-mode: screen;
+}
+
 .work-log {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
   background: var(--surface-1);
   border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
   border-radius: var(--radius);
-  padding: 1.25rem 1.5rem;
-  min-width: min(100%, 360px);
+  padding: 2rem 2.25rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
 }
 
 .work-log__title {
-  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  margin: 0 0 1rem;
   color: var(--text);
+}
+
+.work-log__cursor {
+  display: none;
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: 2px;
+  background: var(--accent);
+  vertical-align: text-bottom;
+}
+
+.work-log__cursor.is-active {
+  display: inline-block;
+  animation: work-log-cursor-blink 1s steps(1) infinite;
+}
+
+@keyframes work-log-cursor-blink {
+  50% { opacity: 0; }
 }
 
 .work-log__list {
@@ -344,25 +478,22 @@ a.button {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.work-log__list li {
+/* По умолчанию (без JS, при reduced-motion) строки видны сразу — это и
+   есть статичное состояние. Печатную анимацию включает .is-typing,
+   которую ставит js/heroWorkLog.js только когда действительно будет
+   анимировать. */
+.work-log__list.is-typing li {
   opacity: 0;
   transform: translateY(6px);
-  animation: log-line-in 500ms ease forwards;
+  transition: opacity 400ms ease, transform 400ms ease;
 }
 
-.work-log__list li:nth-child(1) { animation-delay: 0.2s; }
-.work-log__list li:nth-child(2) { animation-delay: 0.9s; }
-.work-log__list li:nth-child(3) { animation-delay: 1.6s; }
-.work-log__list li:nth-child(4) { animation-delay: 2.3s; }
-
-@keyframes log-line-in {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.work-log__list.is-typing li.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ==========================================================================
@@ -370,12 +501,14 @@ a.button {
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .texture__fog {
+  .texture__fog,
+  .hero-light,
+  .work-log__cursor {
     animation: none;
   }
 
-  .work-log__list li {
-    animation: none;
+  .work-log__list.is-typing li {
+    transition: none;
     opacity: 1;
     transform: none;
   }
@@ -383,7 +516,8 @@ a.button {
 
 /* Пауза анимаций при скрытой вкладке — класс ставит js/visibility.js */
 .is-hidden .texture__fog,
-.is-hidden .work-log__list li {
+.is-hidden .hero-light,
+.is-hidden .work-log__cursor {
   animation-play-state: paused;
 }
 
