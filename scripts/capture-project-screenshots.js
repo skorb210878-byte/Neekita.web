@@ -14,15 +14,26 @@ const ROOT = path.resolve(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'assets', 'img', 'projects');
 
 // Соотношение сторон совпадает с .project-card__media (aspect-ratio: 16/10).
-const CAPTURE_WIDTH = 1280;
-const CAPTURE_HEIGHT = 800;
+// У каждого проекта может быть свой размер окна захвата (поле capture),
+// но соотношение сторон всегда 16:10 и финальный вывод всегда 800x500.
+const DEFAULT_CAPTURE = { width: 1280, height: 800 };
 const OUTPUT_WIDTH = 800;
 const OUTPUT_HEIGHT = 500;
 
 const PROJECTS = [
   { slug: 'sida-candle', url: 'http://sidacandle.ru/' },
   { slug: 'bmw-m5-g90', url: 'https://anarabdullaevtwitch.netlify.app/' },
+  {
+    slug: 'lumos-coffee',
+    url: 'https://skorb210878-byte.github.io/Lumus.Coffee/',
+    capture: { width: 1440, height: 900 },
+  },
 ];
+
+// Запуск с аргументом — захватить только один проект по slug, не трогая
+// уже готовые скриншоты остальных (напр. `node capture-project-screenshots.js lumos-coffee`).
+const onlySlug = process.argv[2];
+const TARGETS = onlySlug ? PROJECTS.filter((p) => p.slug === onlySlug) : PROJECTS;
 
 async function launchBrowser() {
   try {
@@ -37,10 +48,11 @@ async function main() {
   mkdirSync(OUT_DIR, { recursive: true });
   const browser = await launchBrowser();
 
-  for (const project of PROJECTS) {
+  for (const project of TARGETS) {
     console.log(`Снимаю ${project.url}…`);
+    const capture = project.capture ?? DEFAULT_CAPTURE;
     const page = await browser.newPage({
-      viewport: { width: CAPTURE_WIDTH, height: CAPTURE_HEIGHT },
+      viewport: { width: capture.width, height: capture.height },
     });
     await page.goto(project.url, { waitUntil: 'networkidle', timeout: 30000 });
     // 3D-витрина (BMW) может ещё догружать модель/анимацию.

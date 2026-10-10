@@ -684,6 +684,25 @@ a.button {
   margin-top: 1rem;
 }
 
+/* 3 карточки: на планшете auto-fit даёт 2 колонки, и третья карточка
+   повисает одна в пустом ряду — растягиваем её на всю ширину вместо
+   пустого места справа (брейкпоинт 900px — как у остальных сеток сайта). */
+@media (max-width: 900px) {
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .project-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .project-card {
   display: flex;
   flex-direction: column;
