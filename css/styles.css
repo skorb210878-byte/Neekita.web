@@ -69,6 +69,33 @@
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
+  /* Курсор мыши в акцентный синий сайта вместо чёрной системной стрелки —
+     тонкая тёмная обводка для контраста на любом фоне (светлый скриншот
+     SiDa, тёмный фон сайта). Хотспот (4 3) — в острие стрелки. */
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M4 2.5 L4 19.8 L8.4 16.1 L11.3 22.3 L14.1 21 L11.2 14.9 L17 14.9 Z' fill='%234a8df0' stroke='%230a0c10' stroke-width='1.3' stroke-linejoin='round'/></svg>") 4 3, auto;
+  /* Полоса прокрутки — в цвет сайта вместо серой системной (Firefox).
+     Ползунок — базовый акцент, трек — поверхность карточек. */
+  scrollbar-color: var(--accent-dark) var(--surface-1);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent-dark);
+  border: 3px solid var(--surface-1);
+  border-radius: var(--radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -328,29 +355,6 @@ a.button {
 @keyframes drift-two {
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(-5vw, -6vh); }
-}
-
-/* ==========================================================================
-   Свет за курсором (раздел 4 ТЗ) — только десктоп, только pointer:fine,
-   отключается в JS при prefers-reduced-motion.
-   ========================================================================== */
-
-.cursor-light {
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--transition-slow);
-  background: radial-gradient(
-    480px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    var(--accent-glow),
-    transparent 70%
-  );
-}
-
-.cursor-light.is-active {
-  opacity: 1;
 }
 
 /* ==========================================================================
@@ -713,6 +717,7 @@ a.button {
 }
 
 .project-card__media {
+  position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: var(--surface-2);
@@ -724,6 +729,24 @@ a.button {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Мягкий вариант по умолчанию — для touch-экранов, где нет наведения,
+     чтобы раскрыть настоящий цвет (см. задание, п.2): лёгкая десатурация
+     без изменения яркости/контраста и без цветного наложения, чтобы
+     скриншоты не терялись. На устройствах с наведением (ниже) этот же
+     img получает более приглушённый «в цвет сайта» вид. */
+  filter: grayscale(0.6);
+}
+
+/* Тёмная виньетка по краям скриншота — фейдит края в цвет поверхности
+   карточки (var(--surface-1)), чтобы светлый скриншот SiDa Candle не
+   «пробивал» тёмную карточку по контуру. Отдельный слой (не блендится),
+   поэтому не завязан на mix-blend-mode акцентного наложения ниже. */
+.project-card__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 46px 14px var(--surface-1);
+  pointer-events: none;
 }
 
 .project-card__body {
@@ -785,6 +808,68 @@ a.button {
 .project-card__link:hover,
 .project-card__link:focus-visible {
   text-decoration: underline;
+}
+
+/* Скриншоты «в цвет сайта»: приглушённый чёрно-белый вид с холодным
+   синим наложением в покое, настоящий цвет — при наведении/фокусе.
+   Только на устройствах, где наведение в принципе есть (hover:hover +
+   pointer:fine) — на touch вместо этого работает мягкий вариант на
+   самом img (см. правило .project-card__media img выше), раскрыть цвет
+   жестом там нечем. */
+@media (hover: hover) and (pointer: fine) {
+  .project-card__media img {
+    filter: grayscale(1) brightness(0.75) contrast(1.05);
+    transition: filter 450ms ease, transform 450ms ease;
+  }
+
+  /* SiDa Candle — светлый розово-белый скриншот, после общего фильтра
+     всё равно заметно «светится» рядом с тёмными BMW и Lumos (проверено
+     по средней яркости в оттенках серого: SiDa ≈247/255 против ≈17
+     у BMW и ≈48 у Lumos, см. DECISIONS.md) — добавлена персональная
+     поправка по src, чтобы все три читались одним тоном в ряду. */
+  .project-card__media img[src*="sida-candle"] {
+    filter: grayscale(1) brightness(0.13) contrast(0.72);
+  }
+
+  .project-card__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(74, 141, 240, 0.18);
+    mix-blend-mode: multiply;
+    transition: opacity 450ms ease;
+    pointer-events: none;
+  }
+
+  .project-card:hover .project-card__media img,
+  .project-card:focus-within .project-card__media img {
+    filter: grayscale(0) brightness(1) contrast(1);
+    transform: scale(1.03);
+  }
+
+  .project-card:hover .project-card__media::after,
+  .project-card:focus-within .project-card__media::after {
+    opacity: 0;
+  }
+}
+
+/* Отдельно от общего `prefers-reduced-motion` ниже по файлу (тот блок
+   стоит раньше по файлу и трогает только transition-duration, а здесь
+   нужно ещё и убрать сам transform — для гарантированного порядка
+   каскада правило объявлено здесь же, сразу после правил, которые
+   переопределяет, той же комбинированной media, а не отдельным nested
+   @media внутри предыдущего блока, см. DECISIONS.md): без зума и без
+   анимации перехода, только мгновенная смена цвета. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  .project-card__media img,
+  .project-card__media::after {
+    transition: none;
+  }
+
+  .project-card:hover .project-card__media img,
+  .project-card:focus-within .project-card__media img {
+    transform: none;
+  }
 }
 
 /* ==========================================================================
