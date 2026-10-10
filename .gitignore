@@ -3,3 +3,4 @@ qa/screens/
 qa/*.log
 qa/*.json
 .claude/
+deploy-for-github/
