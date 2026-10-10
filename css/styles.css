@@ -3,21 +3,51 @@
    ========================================================================== */
 
 :root {
-  /* палитра — раздел 4 ТЗ */
-  --bg: #0b0c0d;
-  --surface-1: #121416;
-  --surface-2: #181b1e;
+  /* база палитры — раздел 4 исходного ТЗ, фон/поверхности сдвинуты на чуть
+     более холодный оттенок без изменения яркости (запрос «смена акцентного
+     цвета», см. DECISIONS.md «Смена акцентного цвета: янтарь → холодный
+     синий») */
+  --bg: #0a0c10;
+  --surface-1: #10131a;
+  --surface-2: #161a22;
   --line: rgba(255, 255, 255, .08);
   --text: #d9dbdc;
   --text-muted: #9aa0a4;
+  /* чистый белый — только для главных заголовков (h1–h3) и ключевых слов
+     в них, не для обычного текста (запрос пользователя, см. DECISIONS.md) */
+  --text-strong: #ffffff;
+
+  /* ===== Акцентная схема — холодный синий (текущая) =====
+     Один блок переменных держит весь акцент: чтобы вернуть янтарь,
+     закомментируйте этот блок и раскомментируйте блок «янтарная схема»
+     ниже — больше в CSS/JS ничего менять не нужно, все стили и
+     js/heroBokeh.js ссылаются только на эти переменные. */
+  --accent: #4a8df0;
+  --accent-light: #7fb0ff;
+  --accent-dark: #2c5fb0;
+  /* текст на акцентном фоне берём тёмным — белый на этом синем даёт
+     контраст ниже нормы 4.5:1, тёмный (#0a0c10, совпадает с фоном
+     страницы) — ≈5.9:1 на самом акценте и ≈8.9:1 на светлом варианте,
+     проверено формулой WCAG, см. DECISIONS.md */
+  --accent-ink: #0a0c10;
+  --accent-glow: rgba(74, 141, 240, 0.08);
+  --accent-glow-strong: rgba(127, 176, 255, 0.45);
+  /* доп. цвета огней hero-фона — холодный синий (основной), приглушённый
+     холодный белый, редкий тусклый синий акцент декора (не для текста) */
+  --hero-glow-white: #cfd9ec;
+  --hero-glow-rare: #42618c;
+
+  /* ===== Янтарная схема: закомментируйте блок «холодный синий» выше и
+     раскомментируйте этот блок, чтобы вернуть исходную палитру раздела 4 ТЗ
   --accent: #d4893a;
-  /* текст на акцентном фоне берём тёмным — на белом/светлом тексте
-     контраст у янтаря ниже нормы 4.5:1, у тёмного — выше 6.5:1 */
+  --accent-light: #e6a158;
+  --accent-dark: #a8652a;
   --accent-ink: #0b0c0d;
-  /* доп. цвета огней hero-фона (раздел 4 ТЗ: амбер/приглушённый тёплый
-     белый/редкий красноватый) — только для декора, не для текста */
-  --hero-warm-white: #d8c7ab;
-  --hero-red: #b3262b;
+  --accent-glow: rgba(212, 137, 58, 0.08);
+  --accent-glow-strong: rgba(230, 161, 88, 0.45);
+  --hero-glow-white: #d8c7ab;
+  --hero-glow-rare: #b3262b;
+  ===== конец янтарной схемы ===== */
 
   --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
   --font-text: "Inter", system-ui, sans-serif;
@@ -104,6 +134,7 @@ h1, h2, h3 {
   letter-spacing: 0.01em;
   line-height: 1.05;
   margin: 0 0 0.5em;
+  color: var(--text-strong);
 }
 
 h1 {
@@ -313,7 +344,7 @@ a.button {
   transition: opacity var(--transition-slow);
   background: radial-gradient(
     480px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(212, 137, 58, 0.08),
+    var(--accent-glow),
     transparent 70%
   );
 }
@@ -415,7 +446,7 @@ a.button {
 
 .button:hover,
 .button:focus-visible {
-  background: #e6a158;
+  background: var(--accent-light);
 }
 
 .button:active {
@@ -473,8 +504,8 @@ a.button {
      анимация ничего не добавляет, см. DECISIONS.md. */
   background-image: repeating-linear-gradient(
     98deg,
-    rgba(217, 219, 220, 0.03) 0px,
-    rgba(217, 219, 220, 0.03) 1px,
+    rgba(207, 217, 236, 0.03) 0px,
+    rgba(207, 217, 236, 0.03) 1px,
     transparent 1px,
     transparent 16px
   );
@@ -498,7 +529,7 @@ a.button {
   min-height: 360px;
   background: var(--surface-1);
   border: 1px solid var(--line);
-  border-left: 2px solid var(--accent);
+  border-left: 2px solid var(--accent-dark);
   border-radius: var(--radius);
   box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
   overflow: hidden;
@@ -524,7 +555,7 @@ a.button {
 .code-window__tab.is-active {
   color: var(--text);
   background: var(--surface-1);
-  box-shadow: inset 0 2px 0 var(--accent);
+  box-shadow: inset 0 2px 0 var(--accent-dark);
 }
 
 .code-window__viewport {
@@ -573,7 +604,7 @@ a.button {
 
 /* Подсветка — только цвета палитры (раздел 4 ТЗ), без «радужной» схемы. */
 .tok--keyword { color: var(--accent); }
-.tok--string { color: var(--hero-warm-white); }
+.tok--string { color: var(--hero-glow-white); }
 .tok--comment { color: var(--text-muted); }
 
 .code-window__cursor {
@@ -788,13 +819,13 @@ a.button {
 
 .service-card__select:hover,
 .service-card__select:focus-visible {
-  background: #e6a158;
+  background: var(--accent-light);
 }
 
 /* Наведение мышью скрывает/показывает кнопку и подсвечивает карточку только
    там, где наведение в принципе есть (hover:hover + pointer:fine) — на
    touch-экранах кнопка остаётся видимой всегда (правило из ТЗ). «Рамка
-   становится янтарной» и «тёплое свечение» сделаны через ::after с
+   становится акцентной» и свечение сделаны через ::after с
    opacity-переходом, а не через transition border-color/box-shadow —
    по правилу анимируются только transform и opacity. */
 @media (hover: hover) and (pointer: fine) {
@@ -802,9 +833,9 @@ a.button {
     content: "";
     position: absolute;
     inset: -1px;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--accent-light);
     border-radius: inherit;
-    box-shadow: 0 0 40px -4px rgba(212, 137, 58, 0.45);
+    box-shadow: 0 0 40px -4px var(--accent-glow-strong);
     opacity: 0;
     transition: opacity var(--transition-fast);
     pointer-events: none;
@@ -991,8 +1022,8 @@ a.button {
 
 .button--secondary:hover,
 .button--secondary:focus-visible {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--accent-light);
+  color: var(--accent-light);
   background: transparent;
 }
 

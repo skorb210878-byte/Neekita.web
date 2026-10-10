@@ -17,8 +17,8 @@ const OUT_PATH = path.join(__dirname, '..', 'assets', 'img', 'og-image.jpg');
 
 const WIDTH = 1200;
 const HEIGHT = 630;
-const BG = '#0b0c0d';
-const ACCENT = '#d4893a';
+const BG = '#0a0c10';
+const ACCENT = '#4a8df0';
 const TEXT = '#d9dbdc';
 const MUTED = '#9aa0a4';
 

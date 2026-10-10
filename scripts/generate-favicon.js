@@ -12,8 +12,8 @@ import sharp from 'sharp';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'assets', 'img');
 
-const BG = '#0b0c0d';
-const ACCENT = '#d4893a';
+const BG = '#0a0c10';
+const ACCENT = '#4a8df0';
 
 // Буква «Н» как геометрия: две вертикальные стойки + горизонтальная перекладина,
 // пропорции под плотный гротеск (Barlow Condensed) — стойки ближе друг к другу,
