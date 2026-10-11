@@ -229,37 +229,38 @@
             работы и ведёт в Telegram.</p>
           <dl class="service-card__facts">
             <div><dt>Срок</dt><dd>2-3 дня</dd></div>
-            <div><dt>Цена</dt><dd>от 5 000 ₽</dd></div>
+            <div><dt>Цена</dt><dd>от 3 000 ₽</dd></div>
           </dl>
           <div class="service-card__cta">
-            <a
-              class="service-card__select js-telegram-cta"
-              href="https://t.me/nkt_ptv"
-              data-message="Здравствуйте, Никита! Хочу заказать: сайт-визитку / лендинг"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Выбрать: сайт-визитка / лендинг, написать в Telegram"
-            >Выбрать</a>
+            <button
+              type="button"
+              class="service-card__select js-open-modal"
+              aria-haspopup="dialog"
+              aria-controls="modal-landing"
+              data-modal="modal-landing"
+              aria-label="Подробнее: сайт-визитка / лендинг"
+            >Выбрать</button>
           </div>
         </article>
 
         <article class="service-card">
-          <h3>Витрина с заказом в Telegram</h3>
-          <p>Каталог товаров или услуг с оформлением заказа прямо в Telegram,
-            без отдельной CRM.</p>
+          <h3>Полноценный сайт</h3>
+          <p>Сайт с множеством функций — каталог, корзина или форма заказа,
+            галереи, выбор вариантов, админские возможности по
+            договорённости, — а не одна страница.</p>
           <dl class="service-card__facts">
             <div><dt>Срок</dt><dd>3-5 дней</dd></div>
             <div><dt>Цена</dt><dd>от 8 000 ₽</dd></div>
           </dl>
           <div class="service-card__cta">
-            <a
-              class="service-card__select js-telegram-cta"
-              href="https://t.me/nkt_ptv"
-              data-message="Здравствуйте, Никита! Хочу заказать: витрину с заказом в Telegram"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Выбрать: витрина с заказом в Telegram, написать в Telegram"
-            >Выбрать</a>
+            <button
+              type="button"
+              class="service-card__select js-open-modal"
+              aria-haspopup="dialog"
+              aria-controls="modal-site"
+              data-modal="modal-site"
+              aria-label="Подробнее: полноценный сайт"
+            >Выбрать</button>
           </div>
         </article>
 
@@ -269,17 +270,17 @@
             то, что раньше делали вручную.</p>
           <dl class="service-card__facts">
             <div><dt>Срок</dt><dd>2-3 дня</dd></div>
-            <div><dt>Цена</dt><dd>от 5 000 ₽</dd></div>
+            <div><dt>Цена</dt><dd>от 4 000 ₽</dd></div>
           </dl>
           <div class="service-card__cta">
-            <a
-              class="service-card__select js-telegram-cta"
-              href="https://t.me/nkt_ptv"
-              data-message="Здравствуйте, Никита! Хочу заказать: Telegram-бота"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Выбрать: Telegram-бот, написать в Telegram"
-            >Выбрать</a>
+            <button
+              type="button"
+              class="service-card__select js-open-modal"
+              aria-haspopup="dialog"
+              aria-controls="modal-bot"
+              data-modal="modal-bot"
+              aria-label="Подробнее: Telegram-бот"
+            >Выбрать</button>
           </div>
         </article>
 
@@ -289,20 +290,197 @@
             Telegram, без установки приложения.</p>
           <dl class="service-card__facts">
             <div><dt>Срок</dt><dd>5-7 дней</dd></div>
-            <div><dt>Цена</dt><dd>от 15 000 ₽</dd></div>
+            <div><dt>Цена</dt><dd>от 10 000 ₽</dd></div>
           </dl>
           <div class="service-card__cta">
+            <button
+              type="button"
+              class="service-card__select js-open-modal"
+              aria-haspopup="dialog"
+              aria-controls="modal-miniapp"
+              data-modal="modal-miniapp"
+              aria-label="Подробнее: Telegram Mini App"
+            >Выбрать</button>
+          </div>
+        </article>
+      </div>
+
+      <dialog class="service-modal" id="modal-landing" aria-labelledby="modal-landing-title" aria-modal="true">
+        <div class="service-modal__panel">
+          <button type="button" class="service-modal__close js-close-modal" aria-label="Закрыть">✕</button>
+          <header class="service-modal__header">
+            <h3 id="modal-landing-title">Сайт-визитка / лендинг</h3>
+            <p class="service-modal__audience">Для кого: нужна одна страница, которая объясняет, что вы делаете, и ведёт в Telegram.</p>
+          </header>
+          <div class="service-modal__body">
+            <section class="service-modal__section">
+              <p class="service-modal__label">Что вы получите</p>
+              <ul class="service-modal__list">
+                <li>Одна страница с вашим текстом, фото и примерами работ</li>
+                <li>Кнопка «Написать в Telegram» с готовым сообщением — человек сразу попадает в чат с вами</li>
+                <li>Сайт нормально открывается и на телефоне, и на компьютере</li>
+                <li>Простой, аккуратный дизайн без лишних элементов</li>
+                <li>Вы увидите, как сайт будет выглядеть, до того как он будет готов</li>
+              </ul>
+            </section>
+            <section class="service-modal__section">
+              <p class="service-modal__label">Как это проходит</p>
+              <ol class="service-modal__steps">
+                <li>Обсуждаем, что должно быть на сайте и какие у вас есть фото и тексты</li>
+                <li>Показываю макет — как сайт будет выглядеть, до начала сборки</li>
+                <li>Собираю сайт и запускаю его в интернете</li>
+              </ol>
+            </section>
+          </div>
+          <footer class="service-modal__footer">
+            <dl class="service-modal__facts">
+              <div><dt>Срок</dt><dd>2-3 дня</dd></div>
+              <div><dt>Цена</dt><dd>от 3 000 ₽</dd></div>
+            </dl>
             <a
-              class="service-card__select js-telegram-cta"
+              class="button service-modal__order js-telegram-cta"
+              href="https://t.me/nkt_ptv"
+              data-message="Здравствуйте, Никита! Хочу заказать: сайт-визитку / лендинг"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Заказать: сайт-визитка / лендинг, написать в Telegram"
+            >Заказать</a>
+          </footer>
+        </div>
+      </dialog>
+
+      <dialog class="service-modal" id="modal-site" aria-labelledby="modal-site-title" aria-modal="true">
+        <div class="service-modal__panel">
+          <button type="button" class="service-modal__close js-close-modal" aria-label="Закрыть">✕</button>
+          <header class="service-modal__header">
+            <h3 id="modal-site-title">Полноценный сайт</h3>
+            <p class="service-modal__audience">Для кого: нужен не одна страница, а рабочий сайт с каталогом и заказами.</p>
+          </header>
+          <div class="service-modal__body">
+            <section class="service-modal__section">
+              <p class="service-modal__label">Что вы получите</p>
+              <ul class="service-modal__list">
+                <li>Каталог товаров или услуг с фотографиями и описаниями</li>
+                <li>Корзина или форма заказа — покупатель сам собирает заказ и отправляет его вам</li>
+                <li>Галереи фото товаров, как в каталоге свечей SiDa Candle</li>
+                <li>Выбор варианта товара — аромат, цвет, объём или то, что нужно именно вам</li>
+                <li>Отдельные возможности для вас как владельца сайта — что показывать и менять, обсуждаем отдельно</li>
+                <li>Сайт удобно работает с телефона</li>
+              </ul>
+            </section>
+            <section class="service-modal__section">
+              <p class="service-modal__label">Как это проходит</p>
+              <ol class="service-modal__steps">
+                <li>Обсуждаем, какие товары или услуги должны быть на сайте и как покупатель будет заказывать</li>
+                <li>Показываю макет каталога и заказа, до начала сборки</li>
+                <li>Собираю рабочий сайт, запускаю и донастраиваю по итогам первого запуска</li>
+              </ol>
+            </section>
+          </div>
+          <footer class="service-modal__footer">
+            <dl class="service-modal__facts">
+              <div><dt>Срок</dt><dd>3-5 дней</dd></div>
+              <div><dt>Цена</dt><dd>от 8 000 ₽</dd></div>
+            </dl>
+            <a
+              class="button service-modal__order js-telegram-cta"
+              href="https://t.me/nkt_ptv"
+              data-message="Здравствуйте, Никита! Хочу заказать: полноценный сайт"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Заказать: полноценный сайт, написать в Telegram"
+            >Заказать</a>
+          </footer>
+        </div>
+      </dialog>
+
+      <dialog class="service-modal" id="modal-bot" aria-labelledby="modal-bot-title" aria-modal="true">
+        <div class="service-modal__panel">
+          <button type="button" class="service-modal__close js-close-modal" aria-label="Закрыть">✕</button>
+          <header class="service-modal__header">
+            <h3 id="modal-bot-title">Telegram-бот</h3>
+            <p class="service-modal__audience">Для кого: нужно принимать заявки и отвечать людям в Telegram без ручной переписки.</p>
+          </header>
+          <div class="service-modal__body">
+            <section class="service-modal__section">
+              <p class="service-modal__label">Что вы получите</p>
+              <ul class="service-modal__list">
+                <li>Бот, который принимает заявки и вопросы прямо в Telegram</li>
+                <li>Готовые ответы на частые вопросы — бот отвечает сам</li>
+                <li>Приём оплаты внутри Telegram, например через Tribute, если это нужно</li>
+                <li>Уведомление вам о каждой новой заявке или оплате</li>
+                <li>Бот работает сам, в фоне, пока вы занимаетесь делами</li>
+              </ul>
+            </section>
+            <section class="service-modal__section">
+              <p class="service-modal__label">Как это проходит</p>
+              <ol class="service-modal__steps">
+                <li>Обсуждаем, что должен делать бот и что он должен присылать</li>
+                <li>Показываю, как бот будет отвечать, до запуска</li>
+                <li>Запускаю бота и донастраиваю по итогам первых сообщений</li>
+              </ol>
+            </section>
+          </div>
+          <footer class="service-modal__footer">
+            <dl class="service-modal__facts">
+              <div><dt>Срок</dt><dd>2-3 дня</dd></div>
+              <div><dt>Цена</dt><dd>от 4 000 ₽</dd></div>
+            </dl>
+            <a
+              class="button service-modal__order js-telegram-cta"
+              href="https://t.me/nkt_ptv"
+              data-message="Здравствуйте, Никита! Хочу заказать: Telegram-бота"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Заказать: Telegram-бот, написать в Telegram"
+            >Заказать</a>
+          </footer>
+        </div>
+      </dialog>
+
+      <dialog class="service-modal" id="modal-miniapp" aria-labelledby="modal-miniapp-title" aria-modal="true">
+        <div class="service-modal__panel">
+          <button type="button" class="service-modal__close js-close-modal" aria-label="Закрыть">✕</button>
+          <header class="service-modal__header">
+            <h3 id="modal-miniapp-title">Telegram Mini App</h3>
+            <p class="service-modal__audience">Для кого: нужен полноценный магазин внутри Telegram, без установки отдельного приложения.</p>
+          </header>
+          <div class="service-modal__body">
+            <section class="service-modal__section">
+              <p class="service-modal__label">Что вы получите</p>
+              <ul class="service-modal__list">
+                <li>Каталог товаров, который открывается прямо в Telegram по кнопке</li>
+                <li>Корзина — покупатель собирает заказ сам</li>
+                <li>Оформление заказа и уведомление вам о новом заказе</li>
+                <li>Работает одинаково на телефоне и на компьютере</li>
+                <li>При необходимости добавляю оплату внутри Mini App — обсуждаем отдельно</li>
+              </ul>
+            </section>
+            <section class="service-modal__section">
+              <p class="service-modal__label">Как это проходит</p>
+              <ol class="service-modal__steps">
+                <li>Обсуждаем, какие товары и разделы должны быть в Mini App</li>
+                <li>Показываю макет каталога и заказа, до начала сборки</li>
+                <li>Собираю рабочее приложение и запускаю его внутри вашего Telegram-бота</li>
+              </ol>
+            </section>
+          </div>
+          <footer class="service-modal__footer">
+            <dl class="service-modal__facts">
+              <div><dt>Срок</dt><dd>5-7 дней</dd></div>
+              <div><dt>Цена</dt><dd>от 10 000 ₽</dd></div>
+            </dl>
+            <a
+              class="button service-modal__order js-telegram-cta"
               href="https://t.me/nkt_ptv"
               data-message="Здравствуйте, Никита! Хочу заказать: Telegram Mini App"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Выбрать: Telegram Mini App, написать в Telegram"
-            >Выбрать</a>
-          </div>
-        </article>
-      </div>
+              aria-label="Заказать: Telegram Mini App, написать в Telegram"
+            >Заказать</a>
+          </footer>
+        </div>
+      </dialog>
     </section>
 
     <section id="process" class="section" aria-labelledby="process-heading">

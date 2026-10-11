@@ -662,7 +662,8 @@ a.button {
 
   .service-card,
   .service-card::after,
-  .service-card__select {
+  .service-card__select,
+  .service-modal__panel {
     transition-duration: 0.01ms;
   }
 }
@@ -915,9 +916,11 @@ a.button {
   font-weight: 500;
   font-size: 0.85rem;
   text-decoration: none;
+  border: none;
   border-radius: var(--radius);
   opacity: 1;
   transform: translateY(0);
+  cursor: pointer;
   transition: opacity var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
 }
 
@@ -1005,6 +1008,210 @@ a.button {
 .service-card__facts dd {
   margin: 0;
   text-align: left;
+}
+
+/* ==========================================================================
+   Модальные окна услуг
+   Нативный <dialog> вместо кастомной реализации: showModal() сам
+   удерживает фокус внутри (focus trap) и блокирует взаимодействие с
+   остальной страницей — ничего из этого не пишем руками в JS, см.
+   DECISIONS.md. Окно растянуто на весь экран (position:fixed; inset:0;
+   display:flex — центрирует панель), чтобы клик именно по затемнению
+   (а не по панели) попадал в сам <dialog>, а не в случайный элемент
+   под ним — так js/serviceModal.js отличает клик по фону от клика по
+   контенту: event.target === dialog.
+   ========================================================================== */
+
+/* Ставит js/serviceModal.js, пока открыто любое окно услуги — блокирует
+   прокрутку страницы под затемнением (отдельно от native-блокировки
+   showModal(), которая не во всех браузерах гасит колесо мыши/жесты). */
+body.has-modal-open {
+  overflow: hidden;
+}
+
+/* Стили позиционирования — только на [open]: правила автора (эти) всегда
+   перекрывают user-agent `dialog:not([open]) { display: none }`
+   независимо от специфичности (origin важнее specificity в каскаде) —
+   без привязки к [open] закрытый <dialog> всё равно получил бы
+   display:flex и лежал бы поверх страницы, перехватывая клики (так и
+   произошло при первой проверке — см. QA.md, круг №1). */
+.service-modal[open] {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text);
+}
+
+.service-modal::backdrop {
+  background: rgba(5, 7, 10, 0.72);
+}
+
+.service-modal__panel {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--surface-1);
+  border: 1px solid var(--accent-light);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 0 60px -10px var(--accent-glow-strong);
+  /* Анимация появления — только opacity/transform (правило раздела 4
+     ТЗ). Класс is-visible добавляет js/serviceModal.js на следующий
+     кадр после showModal(), а не синхронно — иначе браузер схлопывает
+     переход в один кадр и transition не воспроизводится. */
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.service-modal.is-visible .service-modal__panel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.service-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.service-modal__close:hover,
+.service-modal__close:focus-visible {
+  color: var(--accent-light);
+  border-color: var(--accent-light);
+}
+
+.service-modal__header {
+  padding-right: 48px;
+  margin-bottom: 1rem;
+}
+
+.service-modal__header h3 {
+  margin-bottom: 0.35em;
+}
+
+.service-modal__audience {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.service-modal__section {
+  margin-bottom: 1.25rem;
+}
+
+.service-modal__label {
+  margin: 0 0 0.6em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-light);
+}
+
+.service-modal__list,
+.service-modal__steps {
+  margin: 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 0.5em;
+  font-size: 0.95rem;
+}
+
+.service-modal__footer {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.service-modal__facts {
+  margin: 0;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.service-modal__facts div {
+  display: grid;
+  gap: 0.15em;
+}
+
+.service-modal__facts dt {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.service-modal__facts dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.service-modal__order {
+  margin-top: 0;
+}
+
+/* Мобильный bottom sheet: окно почти на весь экран, прижато к низу,
+   прокрутка — внутри панели, а не у всей страницы (раздел 4 ТЗ). */
+@media (max-width: 600px) {
+  /* [open] повторён здесь, чтобы специфичность совпадала с базовым
+     `.service-modal[open]` выше — иначе он перекрыл бы padding/
+     align-items этого переопределения независимо от медиа-запроса
+     (при равной специфичности источника порядок в файле решает,
+     при разной — выигрывает более специфичное правило). */
+  .service-modal[open] {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .service-modal__panel {
+    width: 100%;
+    max-height: 92vh;
+    border-radius: var(--radius) var(--radius) 0 0;
+    border-bottom: none;
+  }
+
+  .service-modal__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .service-modal__order {
+    width: 100%;
+  }
 }
 
 /* ==========================================================================

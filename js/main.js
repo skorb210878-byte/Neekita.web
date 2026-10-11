@@ -2,6 +2,7 @@ import { initVisibilityPause } from './visibility.js';
 import { initTelegramCta } from './telegramCta.js';
 import { initHeroBokeh } from './heroBokeh.js';
 import { initHeroCode } from './heroCode.js';
+import { initServiceModals } from './serviceModal.js';
 
 const footerYear = document.getElementById('footer-year');
 if (footerYear) {
@@ -12,3 +13,4 @@ initVisibilityPause();
 initTelegramCta();
 initHeroBokeh();
 initHeroCode();
+initServiceModals();
